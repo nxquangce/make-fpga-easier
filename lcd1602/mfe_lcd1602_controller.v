@@ -36,9 +36,9 @@ module mfe_lcd1602_controller(
 );
 
 ////////////////////////////////////////////////////////////////////////////////
-// Paramters
+// Parameters
 
-// Timer value is recommended for Fclk ~ 100MHz
+// Timer values are recommended for Fclk ~ 100MHz
 parameter T_AS_MAX          = 6;         // address setup time
 parameter T_PW_MAX          = 24;        // pulse width time
 parameter T_LW_MAX          = 180000;    // description time long
