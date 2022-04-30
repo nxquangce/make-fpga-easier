@@ -5,7 +5,7 @@
 // 
 // Create Date: 04/30/2022 10:12:20 AM
 // Design Name: 
-// Module Name: led7seg_74hc595_demo_0
+// Module Name: mfe_led7seg_74hc595_demo_0
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module led7seg_74hc595_demo_0(
+module mfe_led7seg_74hc595_demo_0(
     clk,
     rst,
     sclk,
