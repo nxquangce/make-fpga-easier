@@ -41,7 +41,6 @@ output dio;
 
 reg [15:0] data;
 reg [ 2:0] cnt;
-wire       next_vld;
 wire       vld;
 
 always @(posedge clk) begin
