@@ -9,9 +9,12 @@
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
-// Description: 
+// Description: Demo mfe_led7seg_74hc595_wrapper.
+//              Display '76543210' string at reset, ring shift left when push button
 // 
 // Dependencies: 
+//      - mfe_led7seg_74hc595_controller_wrapper.v
+//      - mfe_led7seg_74hc595_controller.v
 // 
 // Revision:
 // Revision 0.01 - File Created
@@ -40,9 +43,9 @@ parameter NUM_0 = 8'hC0, NUM_1 = 8'hF9, NUM_2 = 8'hA4, NUM_3 = 8'hB0, NUM_4 = 8'
           NUM_A = 8'h8C, NUM_b = 8'hBF, NUM_C = 8'hC6, NUM_d = 8'hA1, NUM_E = 8'h86,
           NUM_F = 8'hFF, NUM_LINE = 8'hbf;
 
-input clk;
-input rst;
-input btn;
+input  clk;
+input  rst;
+input  btn;
 output sclk;
 output rclk;
 output dio;

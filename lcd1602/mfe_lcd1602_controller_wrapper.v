@@ -11,7 +11,7 @@
 // Tool Versions: 2018.2/any
 // Description: LCD1602 controller with implemented features
 // 
-// Dependencies: 
+// Dependencies: mfe_lcd1602_controller.v
 // 
 // Revision:
 // Revision 0.01 - File Created
@@ -55,12 +55,12 @@ parameter SHIFT_CNT_MAX     = 25'd31249999;
 parameter SHIFT_CNT_WIDTH   = 25;
 
 parameter FSM_WIDTH         = 3;
-localparam S_IDLE           = 'd0;
-localparam S_INIT           = 'd1;
-localparam S_LCMD           = 'd2;
-localparam S_SCMD           = 'd3;
-localparam S_SHIF           = 'd4;
-localparam S_DATA           = 'd5;
+localparam S_IDLE           = 'd0;      // Idle
+localparam S_INIT           = 'd1;      // Init
+localparam S_LCMD           = 'd2;      // Long command
+localparam S_SCMD           = 'd3;      // Short command
+localparam S_SHIF           = 'd4;      // Shifting mode
+localparam S_DATA           = 'd5;      // Send data
 
 ////////////////////////////////////////////////////////////////////////////////
 // Ports declaration
@@ -146,16 +146,16 @@ always @(*) begin
                             (vld)          ? S_DATA : S_IDLE;
             end
         end
-        S_INIT: begin
+        S_INIT: begin   // Setup LCD
             lcdctrl_cmd = 1'b1;
             lcdctrl_vld = 1'b1;
             lcdctrl_lwt = 1'b1;
             case (init_cnt)
-                3'd0: lcdctrl_dat = 8'h38;
-                3'd1: lcdctrl_dat = 8'h0C;
-                3'd2: lcdctrl_dat = 8'h01;
-                3'd3: lcdctrl_dat = 8'h06;
-                3'd4: lcdctrl_dat = 8'h80;
+                3'd0: lcdctrl_dat = 8'h38;  // data length 8 bit, 2 lines
+                3'd1: lcdctrl_dat = 8'h0C;  // display on, no cursor
+                3'd2: lcdctrl_dat = 8'h01;  // clear
+                3'd3: lcdctrl_dat = 8'h06;  // cursor moves to right, DDRAM addr + 1, no shift
+                3'd4: lcdctrl_dat = 8'h80;  // Set cursor to addr 0 at left top
                 default: begin
                     lcdctrl_dat = 8'h80;
                     lcdctrl_vld = 1'b0;

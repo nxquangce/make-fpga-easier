@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module mfe_led7seg_74hc595_controller(
+module mfe_led7seg_74hc595_controller (
     clk,
     rst,
     dat,
@@ -34,10 +34,10 @@ module mfe_led7seg_74hc595_controller(
 
 ////////////////////////////////////////////////////////////////////////////////
 // Parameters
-parameter   DIG_NUM       = 8;
-parameter   SEG_NUM       = 8;
-localparam  DAT_WIDTH     = DIG_NUM + SEG_NUM;
-parameter   DIV_WIDTH     = 8;
+parameter   DIG_NUM       = 8;                      // Number of digits
+parameter   SEG_NUM       = 8;                      // Number of segments in a LED
+localparam  DAT_WIDTH     = DIG_NUM + SEG_NUM;      // Data width to display a character at a position
+parameter   DIV_WIDTH     = 8;                      // Scan freqency div factor from original clock
 
 function integer clogb2;
    input [31:0] value;
@@ -81,18 +81,26 @@ assign stop = rclk & (div_cnt == 0);
 // Cache data
 always @(posedge clk) begin
     if (rst) begin
-        start   <= 1'b0;
         dat_reg <= {DAT_WIDTH{1'b0}};
     end
     else if (vld) begin
-        start   <= 1'b1;
         dat_reg <= dat;
-    end
-    else if (stop) begin
-        start <= 1'b0;
     end
     else if (sclk_enb) begin
         dat_reg <= dat_reg << 1;
+    end
+end
+
+// Start controll
+always @(posedge clk) begin
+    if (rst) begin
+        start <= 1'b0;
+    end
+    else if (vld) begin
+        start <= 1'b1;
+    end
+    else if (stop) begin
+        start <= 1'b0;
     end
 end
 
@@ -112,7 +120,7 @@ always @(posedge clk) begin
     end
 end
 
-assign sclk     = sclk_reg & start;
+assign sclk = sclk_reg & start;
 
 // Generate RCLK
 always @(posedge clk) begin

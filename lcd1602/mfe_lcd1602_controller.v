@@ -46,10 +46,10 @@ parameter T_SW_MAX          = 5000;      // description time short
 parameter T_WIDTH           = 18;        // Bitwidth of timer cnt
 parameter SHORT_WAIT_ENABLE = 1;         // Enable short wait time, if = 0: wait time is T_LW_MAX
 
-localparam S_IDLE = 2'b00;
-localparam S_INST = 2'b01;
-localparam S_ENAB = 2'b10;
-localparam S_WAIT = 2'b11;
+localparam S_IDLE = 2'b00;               // Idle
+localparam S_INST = 2'b01;               // Setup write strobe
+localparam S_ENAB = 2'b10;               // Raise enable
+localparam S_WAIT = 2'b11;               // Waitting for command completed
 
 ////////////////////////////////////////////////////////////////////////////////
 // Ports delcaration

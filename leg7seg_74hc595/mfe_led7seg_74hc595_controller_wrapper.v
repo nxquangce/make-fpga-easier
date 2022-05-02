@@ -1,17 +1,17 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Company: Computer Engineering Lab - CSE - HCMUT
+// Engineer: Nguyen Xuan Quang
 // 
 // Create Date: 04/30/2022 11:39:55 AM
-// Design Name: 
-// Module Name: mfe_led7seg_74hc595
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
+// Design Name: 7 segment LEDs with shift register IC 74HC595 Wrapper
+// Module Name: mfe_led7seg_74hc595_controller_wrapper
+// Project Name: Make FPGA Easier
+// Target Devices: Arty-Z7/any
+// Tool Versions: 2018.2/any
+// Description: Display 8 characters of input to 8 7-seg LEDs automatically
 // 
-// Dependencies: 
+// Dependencies: mfe_led7seg_74hc595_controller.v
 // 
 // Revision:
 // Revision 0.01 - File Created
@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module mfe_led7seg_74hc595_wrapper (
+module mfe_led7seg_74hc595_controller_wrapper (
     clk,
     rst,
     dat,
@@ -33,11 +33,11 @@ module mfe_led7seg_74hc595_wrapper (
 
 ////////////////////////////////////////////////////////////////////////////////
 // Parameters
-parameter   DIG_NUM       = 8;
-parameter   SEG_NUM       = 8;
-localparam  CHA_WIDTH     = DIG_NUM + SEG_NUM;
-localparam  DAT_WIDTH     = SEG_NUM * DIG_NUM;
-parameter   DIV_WIDTH     = 8;
+parameter   DIG_NUM       = 8;                      // Number of digits
+parameter   SEG_NUM       = 8;                      // Number of segments in a LED
+localparam  CHA_WIDTH     = DIG_NUM + SEG_NUM;      // Data width to display a character at a position
+localparam  DAT_WIDTH     = SEG_NUM * DIG_NUM;      // Data width of all character (without positions)
+parameter   DIV_WIDTH     = 8;                      // Scan freqency div factor from original clock
 
 function integer clogb2;
    input [31:0] value;
@@ -121,7 +121,7 @@ end
 
 // Controller
 mfe_led7seg_74hc595_controller
-#(
+    #(
     .DIG_NUM    (DIG_NUM),
     .SEG_NUM    (SEG_NUM),
     .DIV_WIDTH  (DIV_WIDTH)
