@@ -1,25 +1,25 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
+// Company:
+// Engineer:
+//
 // Create Date: 04/30/2022 12:02:39 PM
-// Design Name: 
+// Design Name:
 // Module Name: mfe_led7seg_74hc595_demo_1
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
+// Project Name:
+// Target Devices:
+// Tool Versions:
 // Description: Demo mfe_led7seg_74hc595_wrapper.
 //              Display '76543210' string at reset, ring shift left when push button
-// 
-// Dependencies: 
+//
+// Dependencies:
 //      - mfe_led7seg_74hc595_controller_wrapper.v
 //      - mfe_led7seg_74hc595_controller.v
-// 
+//
 // Revision:
 // Revision 0.01 - File Created
 // Additional Comments:
-// 
+//
 //////////////////////////////////////////////////////////////////////////////////
 
 
@@ -79,7 +79,7 @@ end
 
 assign vld = rst_vld | btn_vld_n;
 
-mfe_led7seg_74hc595_wrapper
+mfe_led7seg_74hc595_controller_wrapper
     #(
     .DIG_NUM    (DIG_NUM),
     .SEG_NUM    (SEG_NUM),
