@@ -2,21 +2,21 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Company: Computer Engineering Lab - CSE - HCMUT
 // Engineer: Nguyen Xuan Quang
-// 
+//
 // Create Date: 04/29/2022 11:24:37 PM
 // Design Name: 7 segment LEDs with shift register IC 74HC595 Controller
 // Module Name: mfe_led7seg_74hc595
 // Project Name: Make FPGA Easier
 // Target Devices: Arty-Z7/any
 // Tool Versions: 2018.2/any
-// Description: 
-// 
-// Dependencies: 
-// 
+// Description:
+//
+// Dependencies:
+//
 // Revision:
 // Revision 0.01 - File Created
 // Additional Comments:
-// 
+//
 //////////////////////////////////////////////////////////////////////////////////
 
 
@@ -33,11 +33,6 @@ module mfe_led7seg_74hc595_controller (
     );
 
 ////////////////////////////////////////////////////////////////////////////////
-// Parameters
-parameter   DIG_NUM       = 8;                      // Number of digits
-parameter   SEG_NUM       = 8;                      // Number of segments in a LED
-localparam  DAT_WIDTH     = DIG_NUM + SEG_NUM;      // Data width to display a character at a position
-parameter   DIV_WIDTH     = 8;                      // Scan freqency div factor from original clock
 
 function integer clogb2;
    input [31:0] value;
@@ -48,6 +43,13 @@ function integer clogb2;
 	clogb2 = i + 1;
    end
 endfunction
+
+// Parameters
+parameter   DIG_NUM       = 8;                          // Number of digits
+parameter   SEG_NUM       = 8;                          // Number of segments in a LED
+localparam  DAT_WIDTH_RAW = DIG_NUM + SEG_NUM;
+localparam  DAT_WIDTH     = 2**clogb2(DAT_WIDTH_RAW);   // Data width to display a character at a position
+parameter   DIV_WIDTH     = 8;                          // Scan freqency div factor from original clock
 
 ////////////////////////////////////////////////////////////////////////////////
 // Ports delcaration
@@ -79,12 +81,14 @@ wire                    stop;
 assign stop = rclk & (div_cnt == 0);
 
 // Cache data
+localparam MISS_BIT = DAT_WIDTH - DAT_WIDTH_RAW;
 always @(posedge clk) begin
     if (rst) begin
         dat_reg <= {DAT_WIDTH{1'b0}};
     end
     else if (vld) begin
-        dat_reg <= dat;
+        dat_reg <= {dat[DAT_WIDTH_RAW - 1 -: DAT_WIDTH>>1],
+                    {MISS_BIT{1'b0}}, dat[0 +: DAT_WIDTH>>1 - MISS_BIT]};
     end
     else if (sclk_enb) begin
         dat_reg <= dat_reg << 1;
