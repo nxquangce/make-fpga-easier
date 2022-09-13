@@ -88,7 +88,7 @@ always @(posedge clk) begin
     end
     else if (vld) begin
         dat_reg <= {dat[DAT_WIDTH_RAW - 1 -: DAT_WIDTH>>1],
-                    {MISS_BIT{1'b0}}, dat[0 +: DAT_WIDTH>>1 - MISS_BIT]};
+                    {MISS_BIT{1'b0}}, dat[0 +: ((DAT_WIDTH>>1) - MISS_BIT)]};
     end
     else if (sclk_enb) begin
         dat_reg <= dat_reg << 1;
